@@ -274,6 +274,30 @@ const starterIndex = game.party.findIndex(p => p.name === "Bulbasaur");
 
 // Find Ivysaur in the full Pokémon list
 const evolvedForm = pokemon.find(p => p.name === "Ivysaur");
+// Evolution map: starter number → evolved number
+const evolutionMap = {
+  1: 2,   // Bulbasaur → Ivysaur
+  4: 5,   // Charmander → Charmeleon
+  7: 8,   // Squirtle → Wartortle
+  25: 26  // Pikachu → Raichu
+};
+game.evolveStarter = function() {
+  this.party.forEach((p, index) => {
+    if (evolutionMap[p.number]) {
+      // Find evolved Pokémon in the full dataset
+      const evolved = pokemon.find(mon => mon.number === evolutionMap[p.number]);
+      if (evolved) {
+        // Replace starter with evolved form
+        this.party.splice(index, 1, evolved);
+      }
+    }
+  });
+};
+
+// Example: evolve all starters in your party
+game.evolveStarter();
+
+console.log(game.party);
 
 // Replace Bulbasaur with Ivysaur using splice
 if (starterIndex !== -1 && evolvedForm) {
